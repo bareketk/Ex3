@@ -1,0 +1,245 @@
+---
+title: <span style="color:midnightblue">**Network analysis**</span>
+author: "Bareket Karif"
+date: "26 באפריל 2016"
+output: html_document
+---  
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 200)
+```
+
+## <span style="color:slateblue">**Grey's anatomy**</span>  
+#### *[Data source](http://www.babelgraph.org/data/ga_edgelist.csv)*  
+### <span style="color:lightslategrey">**Question 1 - a**</span>  
+
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+library("downloader")
+library(igraph)
+
+file<-".\\ga_edgelist.csv"
+if(!file.exists(file)){
+  fileURL <- "http://www.babelgraph.org/data/ga_edgelist.csv"
+  download.file(fileURL, destfile = file)
+  # Always record the date
+  dateDownloaded <- date()
+  dateDownloaded
+}
+
+ga.data <- read.csv(file, header=TRUE)
+g <- graph.data.frame(ga.data, directed=FALSE)
+```
+
+### <span style="color:lightslategrey">**edgelist data**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+V(g)$name  
+```
+___
+
+##### <span style="color:lightslategrey">**Betweenness**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+betweenness<-betweenness(g)
+maximum_betweenness<-which.max(betweenness)
+V(g)$name[maximum_betweenness]
+```
+
+
+we got that **the betweenness is sloan**.  
+    
+___  
+  
+	
+##### <span style="color:lightslategrey">**Closeness**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+closeness<-closeness(g)
+maximum_closeness<-which.max(closeness)
+V(g)$name[maximum_closeness]
+```
+
+we got that **the closeness is torres**.  
+  
+___  
+  
+	
+##### <span style="color:lightslategrey">**Eigencetor**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+eigencetor<-eigen_centrality(g)
+maximum_eigencetor<-which.max(eigencetor$vector)
+V(g)$name[maximum_eigencetor]
+```
+
+we got that **the eigencetor is karev**.   
+  
+___  
+  
+  
+  
+            
+
+### <span style="color:lightslategrey">**Question 1 - b**</span>  
+##### <span style="color:lightslategrey">**first algorithm**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+communitys<-g
+```
+
+**i. Print the networks by color code corresponding to the communities**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+fc <- walktrap.community(communitys)
+plot(fc,communitys,vertex.label=membership(fc))
+```
+
+
+**ii. How communities received by each algorithm. What their size?**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+sizes(fc)
+```  
+
+  
+
+**iii. What is the value of modularity received?**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+modularity(fc)
+```  
+___
+##### <span style="color:lightslategrey">**second algorithm**</span>  
+**i. Print the networks by color code corresponding to the communities**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+fc <- edge.betweenness.community(communitys)
+plot(fc,communitys,vertex.label=membership(fc))
+```
+
+
+**ii. How communities received by each algorithm. What their size?**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+sizes(fc)
+```  
+
+  
+
+**iii. What is the value of modularity received?**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+modularity(fc)
+``` 
+  
+  
+  
+  
+  
+## <span style="color:slateblue">**Analyze dolphins data**</span>  
+#### *[Data source](http://www-personal.umich.edu/~mejn/netdata/dolphins.zip)*  
+
+### <span style="color:lightslategrey">**Question 2 - a**</span>  
+  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+library(igraph)
+g <- read.graph("dolphins.gml", format = c("gml"))
+```
+
+### <span style="color:lightslategrey">**Date Description:**</span>  
+The file dolphins.gml contains an undirected social network of frequent
+associations between 62 dolphins in a community living off Doubtful Sound,
+New Zealand, as compiled by Lusseau et al. (2003).  Please cite
+
+  D. Lusseau, K. Schneider, O. J. Boisseau, P. Haase, E. Slooten, and
+  S. M. Dawson, The bottlenose dolphin community of Doubtful Sound features
+  a large proportion of long-lasting associations, Behavioral Ecology and
+  Sociobiology 54, 396-405 (2003).
+
+Additional information on the network can be found in
+
+  D. Lusseau, The emergent properties of a dolphin social network,
+  Proc. R. Soc. London B (suppl.) 270, S186-S188 (2003).
+
+  D. Lusseau, Evidence for social role in a dolphin social network,
+  Preprint q-bio/0607048 (http://arxiv.org/abs/q-bio.PE/0607048)
+
+### <span style="color:lightslategrey">**edgelist data**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+V(g)$label  
+```
+___
+
+##### <span style="color:lightslategrey">**Betweenness**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+betweenness<-betweenness(g)
+maximum_betweenness<-which.max(betweenness)
+V(g)$label[maximum_betweenness]
+```
+
+
+we got that **the betweenness is SN100**.  
+    
+___  
+  
+	
+##### <span style="color:lightslategrey">**Closeness**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+closeness<-closeness(g)
+maximum_closeness<-which.max(closeness)
+V(g)$label[maximum_closeness]
+```
+
+we got that **the closeness is SN100**.  
+  
+___  
+  
+	
+##### <span style="color:lightslategrey">**Eigencetor**</span>  
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+eigencetor<-eigen_centrality(g)
+maximum_eigencetor<-which.max(eigencetor$vector)
+V(g)$label[maximum_eigencetor]
+```
+
+we got that **the eigencetor is Grin**.   
+  
+___  
+  
+  
+  
+            
+
+### <span style="color:lightslategrey">**Question 2 - b**</span>  
+##### <span style="color:lightslategrey">**first algorithm**</span>    
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+communitys<-g
+```
+
+**i. Print the networks by color code corresponding to the communities**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+fc <- walktrap.community(communitys)
+plot(fc,communitys,vertex.label=membership(fc))
+```
+
+
+**ii. How communities received by each algorithm. What their size?**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+sizes(fc)
+```  
+
+  
+
+**iii. What is the value of modularity received?**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+modularity(fc)
+```  
+___
+##### <span style="color:lightslategrey">**second algorithm**</span>  
+**i. Print the networks by color code corresponding to the communities**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+fc <- edge.betweenness.community(communitys)
+plot(fc,communitys,vertex.label=membership(fc))
+```
+
+
+**ii. How communities received by each algorithm. What their size?**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+sizes(fc)
+```  
+
+  
+
+**iii. What is the value of modularity received?**
+```{r include= TRUE, echo=FALSE, warning=FALSE}
+modularity(fc)
+``` 
